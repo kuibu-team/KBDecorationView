@@ -15,22 +15,20 @@ class ViewController: UIViewController {
         messageLabel.font = .systemFont(ofSize: 32)
         messageLabel.textColor = .white
         messageLabel.text = "这是一个Toast"
-        let toastView = MyRoundView(contentView: messageLabel)
+        
+        let toastView = MyRoundView(contentView: messageLabel, inset: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
         toastView.backgroundColor = .init(white: 0, alpha: 0.8)
-        toastView.contentInset = UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
         toastView.cornerRadius = 10
-        toastView.maskLayerSetupHandler = { (maskLayer) in
-            
-        }
+//        toastView.maskLayerSetupHandler = { (maskLayer) in
+//
+//        }
         return toastView
     }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let myView = UIView()
-        let decorationView = KBDecorationView(contentView: myView)
-        self.view.addSubview(decorationView)
+        
     }
     
     @IBAction func toastButtonDidTap(_ sender: Any) {

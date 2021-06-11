@@ -19,7 +19,7 @@ open class KBDecorationView: UIView {
     
     /// 内容内边距
     @objc
-    open var contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10) {
+    open var contentInset: UIEdgeInsets {
         didSet {
             relayoutContentView()
         }
@@ -43,9 +43,11 @@ open class KBDecorationView: UIView {
     
     /// 初始化方法
     /// - Parameter contentView: 内容的View
+    /// - Parameter inset: 内容内边距，默认是
     @objc
-    public init(contentView: UIView) {
+    public init(contentView: UIView, inset: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)) {
         self.contentView = contentView
+        self.contentInset = inset
         super.init(frame: .zero)
         
         setupSubviews()
@@ -54,6 +56,7 @@ open class KBDecorationView: UIView {
     /// 初始化方法
     public required init?(coder: NSCoder) {
         self.contentView = UIView()
+        self.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         super.init(coder: coder)
         
         setupSubviews()

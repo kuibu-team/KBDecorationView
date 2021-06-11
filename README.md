@@ -36,6 +36,12 @@ view.addSubview(decorationView)
 decorationView.contentInset = contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
 ```
 
+或者在初始化时指定内边距
+
+```swift
+let decorationView = KBDecorationView(contentView: myView, inset: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+```
+
 默认的装饰框是一个圆角矩形，有两种方式来自定义装饰框的形状
 
 第一种是继承KBDecorationView，然后重写`setupMaskLayer(_:)`方法

@@ -23,8 +23,8 @@
         messageLabel.font = [UIFont systemFontOfSize:30];
         
         __weak typeof (self) weakSelf = self;
-        self.decorationView = [[KBDecorationView alloc] initWithContentView:messageLabel];
-        self.decorationView.contentInset = UIEdgeInsetsMake(30, 30, 30, 30);
+        self.decorationView = [[KBDecorationView alloc] initWithContentView:messageLabel
+                                                                      inset:UIEdgeInsetsMake(30, 30, 30, 30)];
         self.decorationView.maskLayerSetupHandler = ^(CAShapeLayer * _Nonnull maskLayer) {
             UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:weakSelf.decorationView.bounds cornerRadius:10];
             maskLayer.path = path.CGPath;
