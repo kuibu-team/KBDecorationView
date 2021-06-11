@@ -10,12 +10,12 @@ import KBDecorationView
 
 class MyRoundView: KBDecorationView {
     
-    override var contentInset: UIEdgeInsets {
+    override var contentInsetOffset: UIEdgeInsets {
         get {
-            return UIEdgeInsets(top: 30, left: 30, bottom: 30, right: 30)
+            return UIEdgeInsets(top: 60, left: 10, bottom: 10, right: 10)
         }
         set {
-            
+            relayoutContentView()
         }
     }
     

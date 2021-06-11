@@ -50,12 +50,24 @@ open class KBDecorationView: UIView {
     // MARK: - Life Cycle Methods
     
     /// 初始化方法
-    /// - Parameter contentView: 内容的View
-    /// - Parameter inset: 内容内边距，默认是
+    /// - Parameter contentView: 内容视图
     @objc
-    public init(contentView: UIView, inset: UIEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)) {
-        self.contentView = contentView
-        self.contentInset = inset
+    public init(contentView: UIView) {
+        self.contentView        = contentView
+        self.contentInset       = UIEdgeInsets(top : 10, left : 15, bottom : 10, right : 15)
+        super.init(frame: .zero)
+        
+        setupSubviews()
+    }
+    
+    /// 初始化方法
+    /// - Parameter contentView: 内容视图
+    /// - Parameter contentInset: 内容边距
+    /// - Parameter contentInsetOffset: 内容边距偏移
+    @objc
+    public init(contentView: UIView, contentInset: UIEdgeInsets) {
+        self.contentView        = contentView
+        self.contentInset       = contentInset
         super.init(frame: .zero)
         
         setupSubviews()
@@ -63,8 +75,9 @@ open class KBDecorationView: UIView {
     
     /// 初始化方法
     public required init?(coder: NSCoder) {
-        self.contentView = UIView()
-        self.contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        self.contentView        = UIView()
+        self.contentInset       = UIEdgeInsets(top : 10, left : 10, bottom : 10, right : 10)
+        self.contentInsetOffset = .zero
         super.init(coder: coder)
         
         setupSubviews()
@@ -89,24 +102,10 @@ open class KBDecorationView: UIView {
     open func setupMaskLayer(_ maskLayer: CAShapeLayer) {
         maskLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.size.height/8.0).cgPath
     }
-}
-
-// MARK: - Helper Methods
-extension KBDecorationView {
-    
-    /// 配置子视图
-    func setupSubviews() {
-        self.backgroundColor = UIColor(white: 0, alpha: 0.618)
-        self.addSubview(contentView)
-
-        maskLayer.backgroundColor = UIColor.black.cgColor
-        self.layer.mask = maskLayer
-
-        relayoutContentView()
-    }
     
     /// 重新布局contentView
-    func relayoutContentView() {
+    @objc
+    public final func relayoutContentView() {
         
         contentView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -131,5 +130,20 @@ extension KBDecorationView {
         
         contentViewEdgeConstraints.append(contentsOf: [topConstraint, rightConstraint, bottomConstraint, leftConstraint])
         contentViewEdgeConstraints.forEach { $0.isActive = true }
+    }
+}
+
+// MARK: - Helper Methods
+extension KBDecorationView {
+    
+    /// 配置子视图
+    func setupSubviews() {
+        self.backgroundColor = UIColor(white: 0, alpha: 0.618)
+        self.addSubview(contentView)
+
+        maskLayer.backgroundColor = UIColor.black.cgColor
+        self.layer.mask = maskLayer
+
+        relayoutContentView()
     }
 }
