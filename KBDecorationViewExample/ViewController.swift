@@ -16,8 +16,9 @@ class ViewController: UIViewController {
         messageLabel.textColor = .white
         messageLabel.text = "这是一个Toast"
         
-        let toastView = MyRoundView(contentView: messageLabel, inset: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15))
+        let toastView = MyRoundView(contentView: messageLabel)
         toastView.backgroundColor = .init(white: 0, alpha: 0.8)
+        toastView.contentInsetOffset = UIEdgeInsets(top: 30, left: 0, bottom: 0, right: 0)
         toastView.cornerRadius = 10
 //        toastView.maskLayerSetupHandler = { (maskLayer) in
 //

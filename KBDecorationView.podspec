@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 
   spec.name          = "KBDecorationView"
-  spec.version       = "1.1"
+  spec.version       = "1.2"
   spec.summary       = "装饰视图，用于装饰内容视图"
 
   spec.description   = <<-DESC

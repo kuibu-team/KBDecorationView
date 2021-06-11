@@ -25,6 +25,14 @@ open class KBDecorationView: UIView {
         }
     }
     
+    /// 内容内边距的偏移，方便子类进行扩展
+    @objc
+    open var contentInsetOffset: UIEdgeInsets = .zero {
+        didSet {
+            relayoutContentView()
+        }
+    }
+    
     /// 配置遮罩层的处理，与`setupMaskLayer`方法二选一，优先采用`maskLayerSetupHandler`
     @objc
     public var maskLayerSetupHandler: ((_ maskLayer: CAShapeLayer) -> Void)?
@@ -109,11 +117,19 @@ extension KBDecorationView {
         contentViewEdgeConstraints.removeAll()
         
         // 添加新的约束
-        contentViewEdgeConstraints.append(contentView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: contentInset.left))
-        contentViewEdgeConstraints.append(contentView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -contentInset.right))
-        contentViewEdgeConstraints.append(contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -(contentInset.bottom)))
-        contentViewEdgeConstraints.append(contentView.topAnchor.constraint(equalTo: self.topAnchor, constant: contentInset.top))
+        let topConstraint    = contentView.topAnchor.constraint(equalTo: self.topAnchor,
+                                                                constant: contentInset.top+contentInsetOffset.top)
         
+        let rightConstraint  = contentView.rightAnchor.constraint(equalTo: self.rightAnchor,
+                                                                  constant: -(contentInset.right + contentInsetOffset.right))
+        
+        let bottomConstraint = contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor,
+                                                                   constant: -(contentInset.bottom + contentInsetOffset.bottom))
+        
+        let leftConstraint   = contentView.leftAnchor.constraint(equalTo: self.leftAnchor,
+                                                                 constant: contentInset.left + contentInsetOffset.left)
+        
+        contentViewEdgeConstraints.append(contentsOf: [topConstraint, rightConstraint, bottomConstraint, leftConstraint])
         contentViewEdgeConstraints.forEach { $0.isActive = true }
     }
 }
