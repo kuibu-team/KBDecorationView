@@ -17,19 +17,23 @@ open class KBDecorationView: UIView {
     @objc
     public private(set) var contentView: UIView
     
+    /// 内容尺寸
+    @objc
+    public var contentSize: CGSize = .zero
+    
     /// 内容内边距
     @objc
-    open var contentInset: UIEdgeInsets {
+    open var contentInsets: UIEdgeInsets {
         didSet {
-            relayoutContentView()
+            invalidateIntrinsicContentSize()
         }
     }
     
     /// 内容内边距的偏移，方便子类进行扩展
     @objc
-    open var contentInsetOffset: UIEdgeInsets = .zero {
+    open var contentInsetsOffset: UIEdgeInsets = .zero {
         didSet {
-            relayoutContentView()
+            invalidateIntrinsicContentSize()
         }
     }
     
@@ -53,8 +57,8 @@ open class KBDecorationView: UIView {
     /// - Parameter contentView: 内容视图
     @objc
     public init(contentView: UIView) {
-        self.contentView        = contentView
-        self.contentInset       = UIEdgeInsets(top : 10, left : 15, bottom : 10, right : 15)
+        self.contentView   = contentView
+        self.contentInsets = UIEdgeInsets(top : 10, left : 15, bottom : 10, right : 15)
         super.init(frame: .zero)
         
         setupSubviews()
@@ -62,12 +66,11 @@ open class KBDecorationView: UIView {
     
     /// 初始化方法
     /// - Parameter contentView: 内容视图
-    /// - Parameter contentInset: 内容边距
-    /// - Parameter contentInsetOffset: 内容边距偏移
+    /// - Parameter contentInsets: 内容边距
     @objc
-    public init(contentView: UIView, contentInset: UIEdgeInsets) {
-        self.contentView        = contentView
-        self.contentInset       = contentInset
+    public init(contentView: UIView, contentInsets: UIEdgeInsets) {
+        self.contentView   = contentView
+        self.contentInsets = contentInsets
         super.init(frame: .zero)
         
         setupSubviews()
@@ -75,9 +78,9 @@ open class KBDecorationView: UIView {
     
     /// 初始化方法
     public required init?(coder: NSCoder) {
-        self.contentView        = UIView()
-        self.contentInset       = UIEdgeInsets(top : 10, left : 10, bottom : 10, right : 10)
-        self.contentInsetOffset = .zero
+        self.contentView         = UIView()
+        self.contentInsets       = UIEdgeInsets(top : 10, left : 10, bottom : 10, right : 10)
+        self.contentInsetsOffset = .zero
         super.init(coder: coder)
         
         setupSubviews()
@@ -87,11 +90,29 @@ open class KBDecorationView: UIView {
     open override func layoutSubviews() {
         super.layoutSubviews()
         
+        relayoutContentView()
+        
         if let setupHandler = maskLayerSetupHandler {
             setupHandler(maskLayer)
         } else {
             setupMaskLayer(maskLayer)
         }
+    }
+    
+    open override var intrinsicContentSize: CGSize {
+        
+        let finalInsets = UIEdgeInsets(top: contentInsets.top + contentInsetsOffset.top,
+                                       left: contentInsets.left + contentInsetsOffset.left,
+                                       bottom: contentInsets.bottom + contentInsetsOffset.bottom,
+                                       right: contentInsets.right + contentInsetsOffset.right)
+        
+        var contentSize = self.contentSize
+        if contentSize == .zero {
+            contentSize = contentView.intrinsicContentSize
+        }
+        
+        return CGSize(width: contentSize.width + finalInsets.left + finalInsets.right,
+                      height: contentSize.height + finalInsets.top + finalInsets.bottom)
     }
     
     
@@ -102,35 +123,6 @@ open class KBDecorationView: UIView {
     open func setupMaskLayer(_ maskLayer: CAShapeLayer) {
         maskLayer.path = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.size.height/8.0).cgPath
     }
-    
-    /// 重新布局contentView
-    @objc
-    public final func relayoutContentView() {
-        
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        
-        // 清除旧的约束
-        for constraint in contentViewEdgeConstraints {
-            self.removeConstraint(constraint)
-        }
-        contentViewEdgeConstraints.removeAll()
-        
-        // 添加新的约束
-        let topConstraint    = contentView.topAnchor.constraint(equalTo: self.topAnchor,
-                                                                constant: contentInset.top+contentInsetOffset.top)
-        
-        let rightConstraint  = contentView.rightAnchor.constraint(equalTo: self.rightAnchor,
-                                                                  constant: -(contentInset.right + contentInsetOffset.right))
-        
-        let bottomConstraint = contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor,
-                                                                   constant: -(contentInset.bottom + contentInsetOffset.bottom))
-        
-        let leftConstraint   = contentView.leftAnchor.constraint(equalTo: self.leftAnchor,
-                                                                 constant: contentInset.left + contentInsetOffset.left)
-        
-        contentViewEdgeConstraints.append(contentsOf: [topConstraint, rightConstraint, bottomConstraint, leftConstraint])
-        contentViewEdgeConstraints.forEach { $0.isActive = true }
-    }
 }
 
 // MARK: - Helper Methods
@@ -140,10 +132,23 @@ extension KBDecorationView {
     func setupSubviews() {
         self.backgroundColor = UIColor(white: 0, alpha: 0.618)
         self.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
 
         maskLayer.backgroundColor = UIColor.black.cgColor
         self.layer.mask = maskLayer
-
-        relayoutContentView()
+    }
+    
+    /// 重新布局contentView
+    private func relayoutContentView() {
+        
+        let finalInsets = UIEdgeInsets(top: contentInsets.top + contentInsetsOffset.top,
+                                       left: contentInsets.left + contentInsetsOffset.left,
+                                       bottom: contentInsets.bottom + contentInsetsOffset.bottom,
+                                       right: contentInsets.right + contentInsetsOffset.right)
+        
+        contentView.frame = CGRect(x: finalInsets.left,
+                                   y: finalInsets.top,
+                                   width: bounds.size.width - finalInsets.left - finalInsets.right,
+                                   height: bounds.size.height - finalInsets.top - finalInsets.bottom)
     }
 }

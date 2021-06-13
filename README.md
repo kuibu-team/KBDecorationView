@@ -13,7 +13,7 @@
 在`Podfile`文件中加入
 
 ```ruby
-pod 'KBDecorationView', '~> 1.0.0'
+pod 'KBDecorationView', '~> 1.5.0'
 ```
 
 
@@ -33,13 +33,13 @@ view.addSubview(decorationView)
 设置内容的内边距
 
 ```swift
-decorationView.contentInset = contentInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
+decorationView.contentInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10);
 ```
 
 或者在初始化时指定内边距
 
 ```swift
-let decorationView = KBDecorationView(contentView: myView, inset: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
+let decorationView = KBDecorationView(contentView: myView, contentInsets: UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 15)
 ```
 
 默认的装饰框是一个圆角矩形，有两种方式来自定义装饰框的形状
@@ -57,7 +57,7 @@ class MyView: KBDecorationView {
 }
 ```
 
-⚠️ 此方式只适用于Swift，Objective-C不能继承Swift的类
+⚠️ 第一种方法只适用于Swift，Objective-C不能继承Swift的类
 
 第二种方法是通过`maskLayerSetupHandler` 闭包，`maskLayerSetupHandler`的优先级比`setupMaskLayer`优先级高
 

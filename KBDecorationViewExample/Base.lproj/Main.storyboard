@@ -16,19 +16,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HgH-Wu-lIi">
-                                <rect key="frame" x="188" y="264" width="38" height="30"/>
-                                <state key="normal" title="Toast"/>
-                                <connections>
-                                    <action selector="toastButtonDidTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8q7-4B-2eG"/>
-                                </connections>
-                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="XIz-ed-kQT">
+                                <rect key="frame" x="82" y="264" width="250" height="30"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HgH-Wu-lIi">
+                                        <rect key="frame" x="0.0" y="0.0" width="117" height="30"/>
+                                        <state key="normal" title="Toast"/>
+                                        <connections>
+                                            <action selector="toastButtonDidTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8q7-4B-2eG"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bMZ-Bx-thB">
+                                        <rect key="frame" x="133" y="0.0" width="117" height="30"/>
+                                        <state key="normal" title="Dynamic Change"/>
+                                        <connections>
+                                            <action selector="dynamicButtonDidTap:" destination="BYZ-38-t0r" eventType="touchUpInside" id="vkx-DP-e54"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="HgH-Wu-lIi" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="220" id="L6m-as-WjH"/>
-                            <constraint firstItem="HgH-Wu-lIi" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="NAC-Xu-XDN"/>
+                            <constraint firstItem="XIz-ed-kQT" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="220" id="Hgj-dC-GPb"/>
+                            <constraint firstItem="XIz-ed-kQT" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="sy9-nz-fhx"/>
                         </constraints>
                     </view>
                 </viewController>
