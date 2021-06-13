@@ -30,16 +30,22 @@ class ViewController: UIViewController {
     }
     
     @IBAction func toastButtonDidTap(_ sender: Any) {
+        toastView.layer.bounds = CGRect(x: 0, y: 0, width: toastView.intrinsicContentSize.width, height: toastView.intrinsicContentSize.height)
+        toastView.layer.position = self.view.center
+
         self.view.addSubview(toastView)
-        toastView.translatesAutoresizingMaskIntoConstraints = false
-        toastView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
-        toastView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
         
-        print(toastView.contentInsets)
+        print(toastView.frame)
     }
     
     @IBAction func dynamicButtonDidTap(_ sender: Any) {
         toastView.contentInsetsOffset = UIEdgeInsets(top: 30, left: 30, bottom: 0, right: 0)
+        toastView.layer.bounds = CGRect(x: 0, y: 0, width: toastView.intrinsicContentSize.width, height: toastView.intrinsicContentSize.height)
+        
+        // 为了触发UIView的layoutSubviews方法，修改layer.bounds不会触发
+        toastView.frame = toastView.frame
+        
+        print(toastView.frame)
     }
 }
 
