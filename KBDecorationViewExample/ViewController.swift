@@ -11,7 +11,7 @@ import KBDecorationView
 class ViewController: UIViewController {
     
     lazy var toastView: KBDecorationView = {
-        let messageLabel = UILabel(frame: .zero)
+        let messageLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         messageLabel.font = .systemFont(ofSize: 32)
         messageLabel.textColor = .white
         messageLabel.text = "这是一个Toast"

@@ -108,7 +108,11 @@ open class KBDecorationView: UIView {
         
         var contentSize = self.contentSize
         if contentSize == .zero {
-            contentSize = contentView.intrinsicContentSize
+            if (contentView.bounds.size != .zero) {
+                contentSize = contentView.bounds.size
+            } else {
+                contentSize = contentView.intrinsicContentSize
+            }
         }
         
         return CGSize(width: contentSize.width + finalInsets.left + finalInsets.right,
